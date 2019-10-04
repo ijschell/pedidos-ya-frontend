@@ -1,0 +1,79 @@
+@import '../../vars.scss';
+
+#LoginPage{
+    .container{
+        background-image: url('../../assets/images/tendencias-recetas-destacada.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        .overlay{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 47, 65, 0.5);
+            display: flex;
+            .contentLogin{
+                margin: auto 150px;
+                width: 30%;
+                background: #fff;
+                padding: 10px 50px 50px 50px;
+                box-shadow: 0 0 3px #585858;
+                border-radius: $radius;
+                .header{
+                    .logo{
+                        height: 100px;
+                        display: block;
+                        margin: auto;
+                    }
+                }
+                .form{
+                    padding-top: 30px;
+                    .formGroup{
+                        margin-bottom: 30px;
+                        display: table;
+                        width: 100%;
+                        &:last-child{
+                            margin-bottom: 0;
+                        }
+                        label{
+                            font-size: 14px;
+                            margin-bottom: 10px;
+                            display: table-cell;
+                            position: relative;
+                            vertical-align: middle;
+                            width: 115px;
+                            opacity: 0.5;
+                            span{
+                                display: table-cell;
+                                vertical-align: middle;
+                                padding-right: 10px;
+                                i{
+                                    vertical-align: middle;
+                                }
+                            }
+                        }
+                        input{
+                            width: calc(100% - 30px);
+                            height: 30px;
+                            padding: 10px 15px;
+                            border-radius: $radius;
+                            background: #e2e2e2;
+                            border: none;
+                            display: table-cell;
+                            vertical-align: middle;
+                            font-size: 18px;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
