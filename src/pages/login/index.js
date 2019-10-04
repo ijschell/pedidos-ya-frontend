@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './style.scss';
 import Logo from '../../assets/images/pedidos-ya-logo.png';
 
-export default class LoginPage extends Component {
+export class LoginPage extends Component {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             userName: 'asd',
             password: ''
@@ -18,7 +19,9 @@ export default class LoginPage extends Component {
 
         this.setState({
             [name] : text
-        })
+        });
+
+        this.props.test(text);
 
     }
 
@@ -26,8 +29,6 @@ export default class LoginPage extends Component {
 
         const userName = this.state.userName;
         const password = this.state.password;
-
-        console.log(userName, password);
         
     }
 
@@ -77,3 +78,20 @@ export default class LoginPage extends Component {
         )
     }
 }
+
+
+const mapStateToProps = (state) => ({
+    
+})
+
+const mapDispatchToProps = dispatch => (
+    {
+        test : (text) => dispatch({
+            component : 'loader',
+            type : 'show',
+            message : text
+        })
+    }
+)
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
