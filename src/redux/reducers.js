@@ -1,12 +1,26 @@
 export const reducers = (state, action) => {
 
-    console.log('------------------------------DEBUG------------------------------------')
-    console.log(action)
-    console.log('------------------------------DEBUG------------------------------------')
-
     if(action.component === 'loader'){
 
         state = handleLoader(state, action);
+
+    }
+
+    if(action.component === 'app_authorization'){
+
+        state = handleAppAuth(state, action);
+
+    }
+
+    if(action.component === 'user'){
+
+        state = handleUser(state, action);
+
+    }
+
+    if(action.component === 'restaurants'){
+
+        state = handleRestaurants(state, action);
 
     }
 
@@ -38,6 +52,52 @@ const handleLoader = (state, action) => {
                 }
             }
 
+        break;
+    }
+
+}
+
+const handleAppAuth = (state, action) => {
+
+    switch (action.type) {
+        case 'set_authorization':
+            
+            return {
+                ...state,
+                app_authorization : {
+                    authorized : action.authorized,
+                    access_token : action.access_token
+                }
+            }
+
+        break;
+    }
+
+}
+
+const handleUser = (state, action) => {
+
+    switch (action.type) {
+        case 'saveData':
+            
+            return {
+                ...state,
+                user : action.data
+            }
+
+        break;
+    }
+
+}
+
+const handleRestaurants = (state, action) => {
+
+    switch (action.type) {
+        case 'saveData':
+            return {
+                ...state,
+                restaurants : action.restaurants
+            }
         break;
     }
 

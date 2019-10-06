@@ -1,5 +1,7 @@
 @import './vars.scss';
-
+body{
+    overflow: hidden;
+}
 hr{
     opacity: 0.3;
 }
@@ -24,4 +26,14 @@ hr{
             opacity: 0.8;
         }
     }
+}
+.container-fluid{
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+h2{
+    font-size: 20px;
+    font-weight: normal;
 }

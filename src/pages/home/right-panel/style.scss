@@ -1,0 +1,19 @@
+@import '../../../vars.scss';
+
+#homePageRightPanel{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 30px);
+    height: 100%;
+    background: $red;
+    overflow-y: auto;
+    padding: 0px 15px 15px 15px;
+    color: #fff;
+    h2{
+        text-align: right;
+    }
+    hr{
+        border-color: red;
+    }
+}
