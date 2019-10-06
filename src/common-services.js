@@ -9,3 +9,9 @@ export const check_user = (token) => {
     });
 
 }
+
+export const URL_BASE_LOGO = 'https://d1v73nxuzaqxgd.cloudfront.net/restaurants/';
+
+export const PROFILE_PEDIDOS = (link) => {
+    return `http://www.pedidosya.com.uy/restaurantes/montevideo/${link}-menu`;
+}

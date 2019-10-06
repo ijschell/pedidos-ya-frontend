@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import styleMap from './style-map';
 import { searchRestaurantsByCoords } from './service';
-
-const BASE_LOGO = 'https://d1v73nxuzaqxgd.cloudfront.net/restaurants/';
+import { URL_BASE_LOGO } from '../../../common-services';
 
 var myMarker;
 
@@ -32,15 +31,35 @@ export class MapContainer extends Component {
         searchRestaurantsByCoords(coords.lat, coords.lng).then(res => {
             return res.json();
         }).then(res => {
-
-            console.log(res);            
             
             if(!res.error){
 
-                // guardo los restaurantes en store
-                this.props.saveRestaurants(res.restaurants);
+                // reordeno el listado por rating
+                var newOrder = res.restaurants.sort((a, b) => {
+                    if(parseFloat(a.ratingScore) < parseFloat(b.ratingScore)){
+                        return 1;
+                    }else{
+                        return -1;
+                    }
+                });
 
-                this.getRestaurantsAndPrintMarkers(res.restaurants);
+                // elimino los restaurantes cerrados
+                var cerrados = [];
+
+                var abiertos = newOrder.filter(i => {
+                    if(i.opened === 1){
+                        return i;
+                    }else{
+                        cerrados.push(i);
+                    }
+                })
+
+                newOrder = abiertos.concat(cerrados);
+
+                // guardo los restaurantes en store
+                this.props.saveRestaurants(newOrder);
+
+                this.getRestaurantsAndPrintMarkers(newOrder);
 
             }
 
@@ -66,7 +85,7 @@ export class MapContainer extends Component {
         var markersMap = this.state.markers.map((i, k) => {
 
             var icon = {
-                url : BASE_LOGO + i.logo,
+                url : URL_BASE_LOGO + i.logo,
                 origin: new window.google.maps.Point(0, 0),
                 anchor: new window.google.maps.Point(0, 50),
                 scaledSize: new window.google.maps.Size(50, 50)

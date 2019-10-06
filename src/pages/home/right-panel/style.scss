@@ -7,7 +7,7 @@
     width: calc(100% - 30px);
     height: 100%;
     background: $red;
-    overflow-y: auto;
+    overflow-y: hidden;
     padding: 0px 15px 15px 15px;
     color: #fff;
     h2{
@@ -15,5 +15,105 @@
     }
     hr{
         border-color: red;
+    }
+    .contentItems{
+        position: absolute;
+        top: 70px;
+        left: 15px;
+        width: calc(100% - 15px);
+        height: 100%;
+        overflow-y: auto;
+        .item{
+            display: block;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: solid 1px #c71e1e;
+            transition: all 0.5s ease;
+            opacity: 0.7;
+            .name{
+                display: table;
+                width: 100%;
+                cursor: pointer;
+                // padding-bottom: 7px;
+                .cerrado{
+                    display: none;
+                    font-size: 12px !important;
+                    color: black !important;
+                }
+                span{
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: left;
+                    img{
+                        width: 50px;
+                    }
+                    &:first-child{
+                        width: 60px;
+                    }
+                    &.ratingNumber{
+                        text-align: right;
+                        padding-right: 10px;
+                    }
+                    &.rating{
+                        width: 101px;
+                        position: relative;
+                        i{
+                            position: absolute;
+                            transform: translateY(-50%);
+                            top: 50%;
+                            left: 0;
+                            height: 18px;
+                            background: #fff;
+                            width: 100%;
+                            display: block;
+                            z-index: 1;
+                        }
+                        img{
+                            transform: translateY(-50%);
+                            top: 50%;
+                            width: initial;
+                            z-index: 2;
+                            position: absolute;
+                            left: 0;
+                        }
+                    }
+                }
+            }
+            .info{
+                font-size: 13px;
+                background: #d42232;
+                padding: 15px;
+                overflow: hidden;
+                display: none;
+                &.active{
+                    display: block;
+                }
+                ul{
+                    padding: 0;
+                    margin: 0;
+                    li{
+                        list-style: none;
+                        padding-bottom: 15px;
+                        &:last-child{
+                            padding-bottom: 0;
+                        }
+                        a{
+                            color: yellow;
+                        }
+                    }
+                }
+            }
+            &:hover{
+                opacity: 1;
+            }
+            &.close{
+                opacity: 0.2;
+                .name{
+                    .cerrado{
+                        display: inline-block;
+                    }
+                }
+            }
+        }
     }
 }

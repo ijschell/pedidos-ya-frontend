@@ -11,7 +11,8 @@ export const searchRestaurantsByCoords = (lat, lng) => {
     return fetch(SEARCH_RESTAURANTS + 
         '?country='+country+
         '&point='+point+
-        '&max='+max,
+        '&max='+max+
+        '&fields=name,topCategories,rating,opened,rating,ratingScore,deliveryTimeMaxMinutes,logo,link,coordinates',
         {
             headers : {
                 'Authorization' : 'Bearer ' + token
