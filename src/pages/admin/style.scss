@@ -1,0 +1,43 @@
+#AdminPage{
+    .description{
+        background: #eee;
+        padding: 30px;
+        margin: 15px 0;
+    }
+    .left{
+        float: left;
+        width: 50%;
+        border-right: solid 1px #ccc;
+        min-height: 80vh;
+        padding: 30px;
+        .scroll{
+            height: 60vh;
+            overflow-y: auto;
+        }
+        .history{
+            border-bottom: solid 1px #ccc;
+            padding: 10px 0;
+            font-size: 12px;
+            ul{
+                li{
+
+                }
+            }
+        }
+    }
+    .right{
+        float: right;
+        width: 39%;
+        min-height: 80vh;
+        padding: 30px;
+        .scroll{
+            height: 60vh;
+            overflow-y: auto;
+        }
+        .history{
+            border-bottom: solid 1px #ccc;
+            padding: 10px 0;
+            font-size: 12px;
+        }
+    }
+}

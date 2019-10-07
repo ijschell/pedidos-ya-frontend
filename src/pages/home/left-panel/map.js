@@ -28,7 +28,9 @@ export class MapContainer extends Component {
 
     saveResults(coords){
 
-        searchRestaurantsByCoords(coords.lat, coords.lng).then(res => {
+        const userInfo = this.props.user;
+
+        searchRestaurantsByCoords(coords.lat, coords.lng, userInfo).then(res => {
             return res.json();
         }).then(res => {
             
@@ -279,7 +281,8 @@ export class MapContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    restaurants : state.restaurants
+    restaurants : state.restaurants,
+    user : state.user
 })
 
 const mapDispatchToProps = dispatch => ({
