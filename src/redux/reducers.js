@@ -1,5 +1,12 @@
 export const reducers = (state, action) => {
 
+    
+    if(action.component === 'isLoader'){
+
+        state = handleIsLoader(state, action);
+
+    }
+
     if(action.component === 'loader'){
 
         state = handleLoader(state, action);
@@ -25,6 +32,21 @@ export const reducers = (state, action) => {
     }
 
     return state;
+
+}
+
+const handleIsLoader = (state, action) => {
+
+    switch (action.type) {
+        case 'now_loaded':
+            
+            return {
+                ...state,
+                isLoader : action.set
+            }
+
+        break;
+    }
 
 }
 

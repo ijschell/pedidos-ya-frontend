@@ -3,8 +3,11 @@ import {connect} from 'react-redux';
 import styleMap from './style-map';
 import { searchRestaurantsByCoords } from './service';
 import { URL_BASE_LOGO } from '../../../common-services';
+import { isObjectTypeInternalSlot } from '@babel/types';
 
 var myMarker;
+
+var coordsUrl;
 
 export class MapContainer extends Component {
 
@@ -15,20 +18,53 @@ export class MapContainer extends Component {
             myCoords : null,
             markers : [],
             markersMap : [],
-            ready : false
+            ready : false,
         }
+    }
+
+    pushPointToUrl(point){
+
+        window.history.pushState(
+            {}, 
+            null, 
+            window.location.origin + '/?point=' + point['lat'] + ',' + point['lng']
+        )
 
     }
 
-    showInfo(info){
+    checkParamsInUrl(){
 
-        console.log(info);        
+        // checkeo si tengo parámetros en la URL
+        // TRUE la seteo en el state
+        // FALSE nada
+        const search = window.location.search;
+
+        if(search){
+
+            // compruebo si tiene query "point"
+            if(search.indexOf('?point=') !== -1){
+             
+                const point = search.split('=')[1].split(',');
+
+                coordsUrl = {
+                    lat : parseFloat(point[0]),
+                    lng : parseFloat(point[1])
+                }
+
+            }
+
+        }
 
     }
 
     saveResults(coords){
 
         const userInfo = this.props.user;
+
+        // push url con nuevas coords
+        if(coords['lat'] != NaN && coords['lng'] != NaN){
+            this.pushPointToUrl(coords);
+        }        
 
         searchRestaurantsByCoords(coords.lat, coords.lng, userInfo).then(res => {
             return res.json();
@@ -133,14 +169,17 @@ export class MapContainer extends Component {
 
     initMap(cords){
 
-        // inicio mapa            
+        console.log(window.google);
+        console.log(document.getElementById('map'));
+            
+
+        // inicio mapa
+        var latlng = new window.google.maps.LatLng(cords.lat, cords.lng);
+
         var map = new window.google.maps.Map(document.getElementById('map'), {
             zoom: 13,
             styles : styleMap,
-            center: {
-                lat: cords.lat,
-                lng: cords.lng
-            }
+            center: latlng
         });
 
         this.setState({
@@ -171,41 +210,55 @@ export class MapContainer extends Component {
 
     getGeolocation(){
 
-        return new Promise((resolve, reject) => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    
-                    // Si el usuario acepta dar su localización, las tomo y las envío como respuesta del Promise.
-                    this.setState({
-                        myCoords : {
+        return new Promise((resolve, reject) => {        
+
+            if(coordsUrl){
+
+                resolve(coordsUrl);
+
+            }else{
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        
+                        // Si el usuario acepta dar su localización, las tomo y las envío como respuesta del Promise.
+                        this.setState({
+                            myCoords : {
+                                lat : position.coords.latitude,
+                                lng : position.coords.longitude,    
+                            }
+                        })
+    
+                        resolve({
                             lat : position.coords.latitude,
-                            lng : position.coords.longitude,    
-                        }
-                    })
+                            lng : position.coords.longitude,
+                        });            
+    
+                    }, (error) => {
+                        
+                        // de lo contrario, capto el error de gelocation y lo devuelvo
+                        reject(error)
+    
+                    });
+                }
 
-                    resolve({
-                        lat : position.coords.latitude,
-                        lng : position.coords.longitude,
-                    });            
-
-                }, (error) => {
-                    
-                    // de lo contrario, capto el error de gelocation y lo devuelvo
-                    reject(error)
-
-                });
             }
+
         })
 
     }
 
-    componentDidMount() {
+    initAll(){
 
         this.setState({
             ready: true
         });
+        
+        this.checkParamsInUrl();
 
         this.getGeolocation().then(res => {
+
+            console.log(res);            
 
             const myCoords = {
                 title : 'Aquí estás tu!',
@@ -218,6 +271,9 @@ export class MapContainer extends Component {
                 ready: true,
             })
 
+            console.log('asd');
+            
+
             this.initMap(myCoords);
 
             this.saveResults(myCoords);
@@ -225,7 +281,7 @@ export class MapContainer extends Component {
         }).catch(err => {
 
             alert(err.message);
-
+        
             // default coords
             const myCoords = {
                 title : 'Aquí estás tu!',
@@ -267,6 +323,12 @@ export class MapContainer extends Component {
 
     render() {
 
+        if(this.props.isLoader){
+            if(!this.state.ready){
+                this.initAll();
+            }
+        }
+
         if(this.state.ready){
             return (
                 <div>
@@ -282,7 +344,8 @@ export class MapContainer extends Component {
 
 const mapStateToProps = (state) => ({
     restaurants : state.restaurants,
-    user : state.user
+    user : state.user,
+    isLoader : state.isLoader
 })
 
 const mapDispatchToProps = dispatch => ({

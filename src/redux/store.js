@@ -2,6 +2,7 @@ import { createStore } from 'redux';
 import { reducers } from './reducers';
 
 const initialState = {
+    isLoader : false,
     app_authorization : {
         authorized : false,
         access_token : ''

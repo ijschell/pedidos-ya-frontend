@@ -75,11 +75,18 @@ export class LoginPage extends Component {
             this.state.password,
             token
         ).then(res => {
+
+            if(!res.ok){
+                this.props.login('Usuario o contraseña incorrectos');
+            }
+
             return res.json();
+            
         }).then(res => {
-            console.log(res);
 
             if(!res.error){
+
+                this.props.setIsLoader(true);
 
                 this.props.login('Bienvenido!');
 
@@ -94,13 +101,9 @@ export class LoginPage extends Component {
                     redirectTo : '/'
                 })
 
-            }else{
-
-                if(res.message === 'security.invalidCredentials'){
-                    this.props.login('Usuario o contraseña incorrectos');
-                }else{
-                    this.props.login(res.message);
-                }
+                setTimeout(() => {
+                    this.props.alertHide();
+                }, 3000);
 
             }
 
@@ -180,10 +183,19 @@ const mapDispatchToProps = dispatch => (
             type : 'show',
             message : text
         }),
+        alertHide : () => dispatch({
+            component : 'loader',
+            type : 'hide'
+        }),
         saveUserData : (data) => dispatch({
             component : 'user',
             type : 'saveData',
             data
+        }),
+        setIsLoader : (set) => dispatch({
+            component : 'isLoader',
+            type : 'now_loaded',
+            set
         })
     }
 )

@@ -78,11 +78,15 @@ export class BigLoader extends Component {
 
                 if(!res.error){
                     // go to home, ya está logueado
+                    this.props.setIsLoader(true);
+                    console.log('das');
+                    
                     this.setState({
                         ready: true,
-                        redirect : true,
+                        // redirect : true,
                         redirectTo : '/'
                     })
+
                 }else{
 
                     this.checkAppAndLogin();
@@ -101,20 +105,24 @@ export class BigLoader extends Component {
     
     render() {
 
-        if(this.state.ready){
+        if(this.state.redirect){
             return (
                 <div>{this.redirectTo()}</div>
             )
         }else{
-            return (
-                <div id="bigLoader">
-                    {this.redirectTo()}
-                    <div>
-                        <img src={logo} />
-                        <p>Validando App...</p>
+            if(!this.state.ready){
+                return (
+                    <div id="bigLoader">
+                        {/* {this.redirectTo()} */}
+                        <div>
+                            <img src={logo} />
+                            <p>Validando App...</p>
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }else{
+                return '';
+            }
         }
 
     }
@@ -132,6 +140,11 @@ const mapDispatchToProps = dispatch => (
             type : 'set_authorization',
             authorized,
             access_token
+        }),
+        setIsLoader : (set) => dispatch({
+            component : 'isLoader',
+            type : 'now_loaded',
+            set
         })
     }
 )
